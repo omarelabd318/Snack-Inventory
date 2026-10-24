@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snack Inventory</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --card: #ffffff;
+    --text: #1f1d1a;
+    --muted: #6b665f;
+    --line: #e6e1d9;
+    --accent: #c2410c;
+    --accent-soft: #fdeee4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17150f;
+      --card: #211e17;
+      --text: #f2eee6;
+      --muted: #a39d92;
+      --line: #342f25;
+      --accent: #fb923c;
+      --accent-soft: #3a2616;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+  }
+  header { padding: 28px 16px 8px; max-width: 760px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 1.7rem; }
+  .sub { color: var(--muted); font-size: .9rem; margin: 0; }
+  nav {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px;
+    max-width: 760px; margin: 12px auto 0;
+    display: flex; gap: 8px; overflow-x: auto;
+  }
+  nav button {
+    font: inherit; font-size: .9rem;
+    border: 1px solid var(--line);
+    background: var(--card); color: var(--text);
+    padding: 7px 14px; border-radius: 999px;
+    cursor: pointer; white-space: nowrap;
+  }
+  nav button[aria-selected="true"] {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  section.tab { display: none; }
+  section.tab.active { display: block; }
+  .loc {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+  .loc h2 {
+    margin: 0 0 8px; font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: .02em;
+  }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  ul ul { margin-top: 2px; color: var(--muted); }
+  .empty { color: var(--muted); margin: 0; }
+  footer { max-width: 760px; margin: 0 auto; padding: 8px 16px 40px; color: var(--muted); font-size: .8rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Snack Inventory</h1>
+  <p class="sub">What's available right now. Last updated Oct 24, 2026.</p>
+</header>
+
+<nav role="tablist" aria-label="Inventory views">
+  <button role="tab" aria-selected="true" data-tab="all">All</button>
+  <button role="tab" aria-selected="false" data-tab="savory">Savory</button>
+  <button role="tab" aria-selected="false" data-tab="sweet">Sweet</button>
+  <button role="tab" aria-selected="false" data-tab="drinks">Drinks</button>
+  <button role="tab" aria-selected="false" data-tab="finished">Finished</button>
+</nav>
+
+<main>
+
+<!-- ALL (by location) -->
+<section class="tab active" id="tab-all">
+  <div class="loc"><h2>D1</h2>
+    <ul>
+      <li>Frosties</li>
+      <li>Honey</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>D2</h2>
+    <ul>
+      <li>Endomi x3</li>
+      <li>Choco rice cereal (small) x2</li>
+      <li>Fruit Loops cereal (small)</li>
+      <li>Corona chocolate bar</li>
+      <li>Caramel stroopwafel x2</li>
+      <li>Mini Molto x4</li>
+      <li>Twinkie
+        <ul>
+          <li>Double cream x4</li>
+          <li>Icing</li>
+        </ul>
+      </li>
+      <li>Digestive biscuits</li>
+      <li>Hohos x6</li>
+      <li>Nutella</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>D3</h2>
+    <ul>
+      <li>Chipsy
+        <ul>
+          <li>Cheese</li>
+          <li>Cheese &amp; onion</li>
+          <li>Chili &amp; lime x2</li>
+          <li>Tomato</li>
+          <li>Kebab</li>
+          <li>Salt &amp; vinegar</li>
+          <li>Greek mix</li>
+        </ul>
+      </li>
+      <li>Big Chips
+        <ul>
+          <li>Honey sriracha</li>
+          <li>Sour cream &amp; onion</li>
+          <li>Sweet lemon</li>
+        </ul>
+      </li>
+      <li>Raw sour cream &amp; onion</li>
+      <li>Pretzels chili &amp; lemon</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>D4</h2>
+    <ul>
+      <li>Tortilla chips sweet salsa x2</li>
+      <li>Doritos
+        <ul>
+          <li>Sweet chili pepper</li>
+          <li>Flamin' Hot lemon x3</li>
+        </ul>
+      </li>
+      <li>Cheetos
+        <ul>
+          <li>Puffs</li>
+          <li>Crunchy x4</li>
+        </ul>
+      </li>
+      <li>Puffs nacho cheese melt</li>
+      <li>Bake Rolz
+        <ul>
+          <li>Butter &amp; herb x2</li>
+          <li>Sweet chili x2</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="loc"><h2>FE (fridge)</h2>
+    <ul>
+      <li>Water bottle 0.33L x13</li>
+      <li>Water bottle 0.60L</li>
+      <li>Coca-Cola glass bottle</li>
+      <li>Mix chocolate milk x3</li>
+      <li>Milk</li>
+      <li>Lamar juice
+        <ul>
+          <li>Pineapple</li>
+          <li>Mango</li>
+          <li>Cocktail</li>
+        </ul>
+      </li>
+      <li>Juhayna tangerine juice x2</li>
+      <li>Toast</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>FR (freezer)</h2>
+    <p class="empty">Empty</p>
+  </div>
+</section>
+
+<!-- SAVORY -->
+<section class="tab" id="tab-savory">
+  <div class="loc"><h2>D2</h2>
+    <ul><li>Endomi x3</li></ul>
+  </div>
+  <div class="loc"><h2>D3</h2>
+    <ul>
+      <li>Chipsy
+        <ul>
+          <li>Cheese</li>
+          <li>Cheese &amp; onion</li>
+          <li>Chili &amp; lime x2</li>
+          <li>Tomato</li>
+          <li>Kebab</li>
+          <li>Salt &amp; vinegar</li>
+          <li>Greek mix</li>
+        </ul>
+      </li>
+      <li>Big Chips
+        <ul>
+          <li>Honey sriracha</li>
+          <li>Sour cream &amp; onion</li>
+          <li>Sweet lemon</li>
+        </ul>
+      </li>
+      <li>Raw sour cream &amp; onion</li>
+      <li>Pretzels chili &amp; lemon</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>D4</h2>
+    <ul>
+      <li>Tortilla chips sweet salsa x2</li>
+      <li>Doritos
+        <ul>
+          <li>Sweet chili pepper</li>
+          <li>Flamin' Hot lemon x3</li>
+        </ul>
+      </li>
+      <li>Cheetos
+        <ul>
+          <li>Puffs</li>
+          <li>Crunchy x4</li>
+        </ul>
+      </li>
+      <li>Puffs nacho cheese melt</li>
+      <li>Bake Rolz
+        <ul>
+          <li>Butter &amp; herb x2</li>
+          <li>Sweet chili x2</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="loc"><h2>FE (fridge)</h2>
+    <ul><li>Toast</li></ul>
+  </div>
+</section>
+
+<!-- SWEET -->
+<section class="tab" id="tab-sweet">
+  <div class="loc"><h2>D1</h2>
+    <ul>
+      <li>Frosties</li>
+      <li>Honey</li>
+    </ul>
+  </div>
+  <div class="loc"><h2>D2</h2>
+    <ul>
+      <li>Choco rice cereal (small) x2</li>
+      <li>Fruit Loops cereal (small)</li>
+      <li>Corona chocolate bar</li>
+      <li>Caramel stroopwafel x2</li>
+      <li>Mini Molto x4</li>
+      <li>Twinkie
+        <ul>
+          <li>Double cream x4</li>
+          <li>Icing</li>
+        </ul>
+      </li>
+      <li>Digestive biscuits</li>
+      <li>Hohos x6</li>
+      <li>Nutella</li>
+    </ul>
+  </div>
+</section>
+
+<!-- DRINKS -->
+<section class="tab" id="tab-drinks">
+  <div class="loc"><h2>FE (fridge)</h2>
+    <ul>
+      <li>Water bottle 0.33L x13</li>
+      <li>Water bottle 0.60L</li>
+      <li>Coca-Cola glass bottle</li>
+      <li>Mix chocolate milk x3</li>
+      <li>Milk</li>
+      <li>Lamar juice
+        <ul>
+          <li>Pineapple</li>
+          <li>Mango</li>
+          <li>Cocktail</li>
+        </ul>
+      </li>
+      <li>Juhayna tangerine juice x2</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FINISHED -->
+<section class="tab" id="tab-finished">
+  <div class="loc"><h2>Finished</h2>
+    <ul><li>Tea (D1)</li></ul>
+  </div>
+</section>
+
+</main>
+
+<footer>Ask me before you grab the last one.</footer>
+
+<script>
+  var buttons = document.querySelectorAll('nav button');
+  var tabs = document.querySelectorAll('section.tab');
+  function show(name) {
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false');
+    });
+    tabs.forEach(function (t) {
+      t.classList.toggle('active', t.id === 'tab-' + name);
+    });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { show(b.dataset.tab); });
+  });
+</script>
+</body>
+</html>
