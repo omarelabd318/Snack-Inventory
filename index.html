@@ -67,6 +67,12 @@
   li { margin: 3px 0; }
   ul ul { margin-top: 2px; }
   .empty { color: var(--muted); margin: 0; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.last { color: var(--accent); font-weight: 600; }
   #lock-form { display: flex; gap: 8px; margin-top: 12px; }
   #lock-input {
     font: inherit; font-size: 1.1rem; letter-spacing: .3em; text-align: center;
@@ -318,7 +324,18 @@
   <div id="finished-content"></div>
   <template id="finished-template">
     <div class="loc"><h2>Finished</h2>
-      <ul><li>Tea (D1)</li></ul>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Item</th><th>Taken</th><th>Left</th><th>Last one?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Oct 24</td><td>Water bottle 0.33L (Fridge)</td><td>x3</td><td>10</td><td>No</td></tr>
+            <tr><td>Oct 24</td><td>Hohos (D2)</td><td>x1</td><td>5</td><td>No</td></tr>
+            <tr><td>Oct 24</td><td>Tea (D1)</td><td>All</td><td>0</td><td class="last">Yes, last one</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </template>
 </section>
