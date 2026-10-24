@@ -67,6 +67,19 @@
   li { margin: 3px 0; }
   ul ul { margin-top: 2px; }
   .empty { color: var(--muted); margin: 0; }
+  #lock-form { display: flex; gap: 8px; margin-top: 12px; }
+  #lock-input {
+    font: inherit; font-size: 1.1rem; letter-spacing: .3em; text-align: center;
+    width: 7em; padding: 8px 10px;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--line); border-radius: 10px;
+  }
+  #lock-form button {
+    font: inherit; padding: 8px 16px; border-radius: 10px;
+    border: 1px solid var(--accent); background: var(--accent); color: #fff;
+    cursor: pointer;
+  }
+  .lock-error { color: #f87171; margin: 10px 0 0; font-size: .9rem; }
   footer { max-width: 760px; margin: 0 auto; padding: 8px 16px 40px; color: var(--muted); font-size: .8rem; }
 </style>
 </head>
@@ -293,9 +306,21 @@
 
 <!-- FINISHED -->
 <section class="tab" id="tab-finished">
-  <div class="loc"><h2>Finished</h2>
-    <ul><li>Tea (D1)</li></ul>
+  <div class="loc" id="finished-lock">
+    <h2>Finished</h2>
+    <p class="empty">This tab is locked. Enter the 4-digit code.</p>
+    <form id="lock-form" autocomplete="off">
+      <input id="lock-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="----" aria-label="4-digit code">
+      <button type="submit">Unlock</button>
+    </form>
+    <p class="lock-error" id="lock-error" hidden>Wrong code, try again.</p>
   </div>
+  <div id="finished-content"></div>
+  <template id="finished-template">
+    <div class="loc"><h2>Finished</h2>
+      <ul><li>Tea (D1)</li></ul>
+    </div>
+  </template>
 </section>
 
 </main>
@@ -313,6 +338,25 @@
   }
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { show(b.dataset.tab); });
+  });
+
+  // Light lock on the Finished tab (not real security: the code is in this file)
+  var lockBox = document.getElementById('finished-lock');
+  var lockForm = document.getElementById('lock-form');
+  var lockInput = document.getElementById('lock-input');
+  var lockError = document.getElementById('lock-error');
+  lockForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (lockInput.value === '1111') {
+      document.getElementById('finished-content').appendChild(
+        document.getElementById('finished-template').content.cloneNode(true)
+      );
+      lockBox.hidden = true;
+    } else {
+      lockError.hidden = false;
+      lockInput.value = '';
+      lockInput.focus();
+    }
   });
 </script>
 </body>
