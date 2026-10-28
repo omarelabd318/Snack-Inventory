@@ -110,7 +110,7 @@
     <div class="top">
       <div>
         <h1>Snack inventory</h1>
-        <p class="sub">What's available right now.<br>Last updated Oct 27, 2026.</p>
+        <p class="sub">What's available right now.<br>Last updated Oct 28, 2026.</p>
       </div>
       <div class="logo"><img src="/favicon.svg" alt=""></div>
     </div>
@@ -185,7 +185,8 @@
   var STOCK = [
     { loc: 'D1', items: [
       { n: 'Frosties', c: 'sweet', nn: true },
-      { n: 'Honey', c: 'sweet', nn: true }
+      { n: 'Honey', c: 'sweet', nn: true },
+      { n: 'Tea', c: 'drinks', nn: true }
     ]},
     { loc: 'D2', items: [
       { n: 'Indomie chicken flavor', q: 3, c: 'savory' },
@@ -196,7 +197,7 @@
       { n: 'Molto mini', q: 4, c: 'sweet' },
       { n: 'Twinkie', c: 'sweet', k: [ { n: 'Double cream', q: 4 }, { n: 'Icing' } ] },
       { n: 'Digestive biscuits', c: 'sweet', nn: true },
-      { n: 'Hohos', q: 2, c: 'sweet' },
+      { n: 'Hohos', q: 1, c: 'sweet' },
       { n: 'Nutella', c: 'sweet', nn: true }
     ]},
     { loc: 'D3', items: [
@@ -218,7 +219,7 @@
       { n: 'Bake Rolz', c: 'savory', k: [ { n: 'Butter & herb', q: 2 }, { n: 'Sweet chili', q: 2 } ] }
     ]},
     { loc: 'Fridge', items: [
-      { n: 'Water bottle 0.33L', q: 15, c: 'drinks' },
+      { n: 'Water bottle 0.33L', q: 13, c: 'drinks' },
       { n: 'Mix chocolate milk', q: 3, c: 'drinks' },
       { n: 'Lamar juice', c: 'drinks', k: [ { n: 'Cocktail' }, { n: 'Mango' } ] },
       { n: 'Juhayna tangerine juice', q: 2, c: 'drinks' },
@@ -229,6 +230,8 @@
 
   // ---- Finished log (newest first) -----------------------------------
   var LOG = [
+    { d: '2026-10-28', n: 'Hohos (D2)', t: 'x1', l: '1' },
+    { d: '2026-10-28', n: 'Water bottle 0.33L (Fridge)', t: 'x2', l: '13' },
     { d: '2026-10-27', n: 'Hohos (D2)', t: 'x2', l: '2' },
     { d: '2026-10-27', n: 'Water bottle 0.60L (Fridge)', t: 'x1', l: '0 (last one)' },
     { d: '2026-10-27', n: 'Milk (Fridge)', t: 'x1', l: '0 (last one)' },
