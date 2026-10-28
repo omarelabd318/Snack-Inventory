@@ -245,7 +245,8 @@
   function row(name, q, child) {
     var r = el('div', 'row' + (child ? ' child' : ''));
     r.appendChild(el('span', '', name));
-    var b = badge(q);
+    // Flavors with no count show x1; top-level items with no count show nothing.
+    var b = badge(child && q === undefined ? 1 : q);
     if (b) r.appendChild(b);
     return r;
   }
