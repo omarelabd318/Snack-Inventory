@@ -167,13 +167,13 @@
 
 <script>
   // ---- Inventory data -------------------------------------------------
-  // q = count (leave out when there is no count to show). q: 1 = only one left (amber).
-  // k = flavors under an item.
+  // q = count. Leave it out when there is just one (shows amber x1).
+  // nn: true = never counted (no pill at all). k = flavors under an item.
   // c = category: savory, sweet or drinks.
   var STOCK = [
     { loc: 'D1', items: [
       { n: 'Frosties', c: 'sweet' },
-      { n: 'Honey', c: 'sweet' }
+      { n: 'Honey', c: 'sweet', nn: true }
     ]},
     { loc: 'D2', items: [
       { n: 'Indomie chicken flavor', q: 3, c: 'savory' },
@@ -182,10 +182,10 @@
       { n: 'Corona chocolate bar', c: 'sweet' },
       { n: 'Stroopwafel caramel', q: 2, c: 'sweet' },
       { n: 'Molto mini', q: 4, c: 'sweet' },
-      { n: 'Twinkie', c: 'sweet', k: [ { n: 'Double cream', q: 4 }, { n: 'Icing' } ] },
+      { n: 'Twinkie', c: 'sweet', k: [ { n: 'Double cream', q: 4 }, { n: 'Icing', nn: true } ] },
       { n: 'Digestive biscuits', c: 'sweet' },
       { n: 'Hohos', q: 2, c: 'sweet' },
-      { n: 'Nutella', c: 'sweet' }
+      { n: 'Nutella', c: 'sweet', nn: true }
     ]},
     { loc: 'D3', items: [
       { n: 'Chipsy', c: 'savory', k: [
@@ -210,7 +210,7 @@
       { n: 'Mix chocolate milk', q: 3, c: 'drinks' },
       { n: 'Lamar juice', c: 'drinks', k: [ { n: 'Cocktail' }, { n: 'Mango' } ] },
       { n: 'Juhayna tangerine juice', q: 2, c: 'drinks' },
-      { n: 'Toast', c: 'savory' }
+      { n: 'Toast', c: 'savory', nn: true }
     ]},
     { loc: 'Freezer', items: [] }
   ];
@@ -237,16 +237,16 @@
     if (text !== undefined) e.textContent = text;
     return e;
   }
-  function badge(q) {
-    if (q === undefined) return null;            // no count: show nothing
-    if (q === 1) return el('span', 'pill low', 'x1');   // only one left: amber
-    return el('span', 'pill', 'x' + q);
+  function badge(q, nn) {
+    if (nn) return null;                          // never counted: show nothing
+    var n = q === undefined ? 1 : q;              // no count listed means one
+    if (n === 1) return el('span', 'pill low', 'x1');   // only one: amber
+    return el('span', 'pill', 'x' + n);
   }
-  function row(name, q, child) {
+  function row(name, q, child, nn) {
     var r = el('div', 'row' + (child ? ' child' : ''));
     r.appendChild(el('span', '', name));
-    // Flavors with no count show x1; top-level items with no count show nothing.
-    var b = badge(child && q === undefined ? 1 : q);
+    var b = badge(q, nn);
     if (b) r.appendChild(b);
     return r;
   }
@@ -310,11 +310,11 @@
           s.appendChild(el('span', 'pill', it.k.length + (it.k.length === 1 ? ' flavor' : ' flavors')));
           d.appendChild(s);
           var kids = el('div', 'kids');
-          it.k.forEach(function (k) { kids.appendChild(row(k.n, k.q, true)); });
+          it.k.forEach(function (k) { kids.appendChild(row(k.n, k.q, true, k.nn)); });
           d.appendChild(kids);
           card.appendChild(d);
         } else {
-          card.appendChild(row(it.n, it.q, false));
+          card.appendChild(row(it.n, it.q, false, it.nn));
         }
       });
       listEl.appendChild(card);
