@@ -18,6 +18,8 @@
     --line: #26372c;
     --accent: #4ade80;
     --accent-soft: #14301f;
+    --warn: #fbbf24;
+    --warn-soft: #3a2e10;
   }
   * { box-sizing: border-box; }
   body {
@@ -27,353 +29,366 @@
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5;
   }
-  header { padding: 28px 16px 8px; max-width: 760px; margin: 0 auto; }
-  h1 { margin: 0 0 4px; font-size: 1.7rem; }
-  .sub { color: var(--muted); font-size: .9rem; margin: 0; }
-  nav {
-    position: sticky; top: 0; z-index: 5;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-    padding: 10px 16px;
-    max-width: 760px; margin: 12px auto 0;
-    display: flex; gap: 8px; overflow-x: auto;
-  }
-  nav button {
-    font: inherit; font-size: .9rem;
-    border: 1px solid var(--line);
-    background: var(--card); color: var(--text);
-    padding: 7px 14px; border-radius: 999px;
-    cursor: pointer; white-space: nowrap;
-  }
-  nav button[aria-selected="true"] {
-    background: var(--accent); border-color: var(--accent); color: #10100c;
-  }
-  main { max-width: 760px; margin: 0 auto; padding: 16px; }
-  section.tab { display: none; }
-  section.tab.active { display: block; }
-  .loc {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 14px;
-  }
-  .loc h2 {
-    margin: 0 0 8px; font-size: 1rem;
-    color: var(--accent);
-    letter-spacing: .02em;
-  }
-  ul { margin: 0; padding-left: 20px; }
-  li { margin: 3px 0; }
-  ul ul { margin-top: 2px; }
-  .empty { color: var(--muted); margin: 0; }
+  .wrap { max-width: 600px; margin: 0 auto; padding: 24px 16px 110px; }
+  .top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  h1 { margin: 0; font-size: 1.6rem; font-weight: 600; }
+  .sub { margin: 4px 0 0; font-size: .85rem; color: var(--muted); }
+  .logo { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex: none; }
+  .logo img { width: 24px; height: 24px; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+  .stat .lbl { margin: 0; font-size: .8rem; color: var(--muted); }
+  .stat .num { margin: 2px 0 0; font-size: 1.7rem; font-weight: 600; line-height: 1.2; }
+
+  .search { display: flex; align-items: center; gap: 8px; margin-top: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; }
+  .search:focus-within { border-color: var(--accent); }
+  .search svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+  .search input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--text); font: inherit; font-size: 1rem; padding: 11px 0; }
+  .search input::placeholder { color: var(--muted); }
+
+  .chips { display: flex; gap: 8px; margin-top: 12px; overflow-x: auto; padding-bottom: 2px; }
+  .chip { font: inherit; font-size: .85rem; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; white-space: nowrap; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #10100c; font-weight: 600; }
+
+  .loc { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin-top: 12px; }
+  .loc h2 { margin: 0 0 4px; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+  .row:last-child { border-bottom: 0; }
+  .row.child { padding-left: 14px; font-size: .9rem; }
+  .empty { margin: 4px 0 2px; color: var(--muted); font-size: .9rem; }
+  .none { text-align: center; color: var(--muted); padding: 32px 0; }
+
+  details { border-bottom: 1px solid var(--line); }
+  details:last-child { border-bottom: 0; }
+  details > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; font-size: .95rem; }
+  details > summary::-webkit-details-marker { display: none; }
+  details .chev { width: 14px; height: 14px; color: var(--muted); transition: transform .15s; margin-left: 6px; vertical-align: -2px; }
+  details[open] .chev { transform: rotate(180deg); }
+  details .kids .row:last-child { border-bottom: 0; }
+  details .kids { padding-bottom: 4px; }
+
+  .pill { font-size: .75rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+  .pill.low { background: var(--warn-soft); color: var(--warn); }
+
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); }
+  .nav-in { max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .nav button { font: inherit; font-size: .75rem; background: transparent; border: 0; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px; cursor: pointer; }
+  .nav button svg { width: 22px; height: 22px; }
+  .nav button[aria-current="page"] { color: var(--accent); }
+
+  .view[hidden] { display: none; }
+  #lock-form { display: flex; gap: 8px; margin-top: 12px; }
+  #lock-input { font: inherit; font-size: 1.1rem; letter-spacing: .3em; text-align: center; width: 7em; padding: 8px 10px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 10px; }
+  #lock-form button { font: inherit; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: #10100c; font-weight: 600; cursor: pointer; }
+  .lock-error { color: #f87171; margin: 10px 0 0; font-size: .9rem; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: .9rem; }
-  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  th, td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--line); }
   th { color: var(--muted); font-weight: 600; white-space: nowrap; }
   tbody tr:last-child td { border-bottom: 0; }
+  td:first-child, td:last-child { white-space: nowrap; }
   td.last { color: var(--accent); font-weight: 600; }
-  #lock-form { display: flex; gap: 8px; margin-top: 12px; }
-  #lock-input {
-    font: inherit; font-size: 1.1rem; letter-spacing: .3em; text-align: center;
-    width: 7em; padding: 8px 10px;
-    background: var(--bg); color: var(--text);
-    border: 1px solid var(--line); border-radius: 10px;
-  }
-  #lock-form button {
-    font: inherit; padding: 8px 16px; border-radius: 10px;
-    border: 1px solid var(--accent); background: var(--accent); color: #10100c;
-    cursor: pointer;
-  }
-  .lock-error { color: #f87171; margin: 10px 0 0; font-size: .9rem; }
-  footer { max-width: 760px; margin: 0 auto; padding: 8px 16px 40px; color: var(--muted); font-size: .8rem; }
 </style>
 </head>
 <body>
-<header>
-  <h1>Snack Inventory</h1>
-  <p class="sub">What's available right now.<br>Last updated Oct 27, 2026.</p>
-</header>
+<div class="wrap">
 
-<nav role="tablist" aria-label="Inventory views">
-  <button role="tab" aria-selected="true" data-tab="all">All</button>
-  <button role="tab" aria-selected="false" data-tab="savory">Savory</button>
-  <button role="tab" aria-selected="false" data-tab="sweet">Sweet</button>
-  <button role="tab" aria-selected="false" data-tab="drinks">Drinks</button>
-  <button role="tab" aria-selected="false" data-tab="finished">Finished</button>
-</nav>
+  <div id="view-inventory" class="view">
+    <div class="top">
+      <div>
+        <h1>Snack inventory</h1>
+        <p class="sub">What's available right now.<br>Last updated Oct 27, 2026.</p>
+      </div>
+      <div class="logo"><img src="/favicon.svg" alt=""></div>
+    </div>
 
-<main>
+    <div class="stats">
+      <div class="stat"><p class="lbl">Items in stock</p><p class="num" id="stat-items">0</p></div>
+      <div class="stat"><p class="lbl">Taken this week</p><p class="num" id="stat-taken">0</p></div>
+    </div>
 
-<!-- ALL (by location) -->
-<section class="tab active" id="tab-all">
-  <div class="loc"><h2>D1</h2>
-    <ul>
-      <li>Frosties</li>
-      <li>Honey</li>
-    </ul>
-  </div>
-  <div class="loc"><h2>D2</h2>
-    <ul>
-      <li>Indomie chicken flavor x3</li>
-      <li>Choco rice cereal (small) x2</li>
-      <li>Fruit loops cereal (small)</li>
-      <li>Corona chocolate bar</li>
-      <li>Stroopwafel caramel x2</li>
-      <li>Molto mini x4</li>
-      <li>Twinkie
-        <ul>
-          <li>Double cream x4</li>
-          <li>Icing</li>
-        </ul>
-      </li>
-      <li>Digestive biscuits</li>
-      <li>Hohos x2</li>
-      <li>Nutella</li>
-    </ul>
-  </div>
-  <div class="loc"><h2>D3</h2>
-    <ul>
-      <li>Chipsy
-        <ul>
-          <li>Cheese</li>
-          <li>Cheese &amp; onion</li>
-          <li>Chili &amp; lime x2</li>
-          <li>Greek mix</li>
-          <li>Kebab</li>
-          <li>Salt &amp; vinegar</li>
-          <li>Tomato</li>
-        </ul>
-      </li>
-      <li>Big Chips
-        <ul>
-          <li>Honey sriracha</li>
-          <li>Sour cream &amp; onion</li>
-          <li>Sweet lemon</li>
-        </ul>
-      </li>
-      <li>Raw sour cream &amp; onion</li>
-      <li>Pretzels chili &amp; lemon</li>
-    </ul>
-  </div>
-  <div class="loc"><h2>D4</h2>
-    <ul>
-      <li>Tortilla Chips sweet salsa x2</li>
-      <li>Doritos
-        <ul>
-          <li>Flamin' hot lemon x3</li>
-          <li>Sweet chili pepper</li>
-        </ul>
-      </li>
-      <li>Cheetos
-        <ul>
-          <li>Crunchy x4</li>
-          <li>Puffs</li>
-        </ul>
-      </li>
-      <li>Puffs nacho cheese melt</li>
-      <li>Bake Rolz
-        <ul>
-          <li>Butter &amp; herb x2</li>
-          <li>Sweet chili x2</li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <div class="loc"><h2>Fridge</h2>
-    <ul>
-      <li>Water bottle 0.33L x15</li>
-      <li>Mix chocolate milk x3</li>
-      <li>Lamar juice
-        <ul>
-          <li>Cocktail</li>
-          <li>Mango</li>
-        </ul>
-      </li>
-      <li>Juhayna tangerine juice x2</li>
-      <li>Toast</li>
-    </ul>
-  </div>
-  <div class="loc"><h2>Freezer</h2>
-    <p class="empty">Empty</p>
-  </div>
-</section>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Search snacks" autocomplete="off" aria-label="Search snacks">
+    </label>
 
-<!-- SAVORY -->
-<section class="tab" id="tab-savory">
-  <div class="loc"><h2>D2</h2>
-    <ul><li>Indomie chicken flavor x3</li></ul>
-  </div>
-  <div class="loc"><h2>D3</h2>
-    <ul>
-      <li>Chipsy
-        <ul>
-          <li>Cheese</li>
-          <li>Cheese &amp; onion</li>
-          <li>Chili &amp; lime x2</li>
-          <li>Greek mix</li>
-          <li>Kebab</li>
-          <li>Salt &amp; vinegar</li>
-          <li>Tomato</li>
-        </ul>
-      </li>
-      <li>Big Chips
-        <ul>
-          <li>Honey sriracha</li>
-          <li>Sour cream &amp; onion</li>
-          <li>Sweet lemon</li>
-        </ul>
-      </li>
-      <li>Raw sour cream &amp; onion</li>
-      <li>Pretzels chili &amp; lemon</li>
-    </ul>
-  </div>
-  <div class="loc"><h2>D4</h2>
-    <ul>
-      <li>Tortilla Chips sweet salsa x2</li>
-      <li>Doritos
-        <ul>
-          <li>Flamin' hot lemon x3</li>
-          <li>Sweet chili pepper</li>
-        </ul>
-      </li>
-      <li>Cheetos
-        <ul>
-          <li>Crunchy x4</li>
-          <li>Puffs</li>
-        </ul>
-      </li>
-      <li>Puffs nacho cheese melt</li>
-      <li>Bake Rolz
-        <ul>
-          <li>Butter &amp; herb x2</li>
-          <li>Sweet chili x2</li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <div class="loc"><h2>Fridge</h2>
-    <ul><li>Toast</li></ul>
-  </div>
-</section>
+    <div class="chips" id="chips" role="group" aria-label="Category">
+      <button class="chip" data-cat="all" aria-pressed="true">All</button>
+      <button class="chip" data-cat="savory" aria-pressed="false">Savory</button>
+      <button class="chip" data-cat="sweet" aria-pressed="false">Sweet</button>
+      <button class="chip" data-cat="drinks" aria-pressed="false">Drinks</button>
+    </div>
 
-<!-- SWEET -->
-<section class="tab" id="tab-sweet">
-  <div class="loc"><h2>D1</h2>
-    <ul>
-      <li>Frosties</li>
-      <li>Honey</li>
-    </ul>
+    <div id="list"></div>
   </div>
-  <div class="loc"><h2>D2</h2>
-    <ul>
-      <li>Choco rice cereal (small) x2</li>
-      <li>Fruit loops cereal (small)</li>
-      <li>Corona chocolate bar</li>
-      <li>Stroopwafel caramel x2</li>
-      <li>Molto mini x4</li>
-      <li>Twinkie
-        <ul>
-          <li>Double cream x4</li>
-          <li>Icing</li>
-        </ul>
-      </li>
-      <li>Digestive biscuits</li>
-      <li>Hohos x2</li>
-      <li>Nutella</li>
-    </ul>
-  </div>
-</section>
 
-<!-- DRINKS -->
-<section class="tab" id="tab-drinks">
-  <div class="loc"><h2>Fridge</h2>
-    <ul>
-      <li>Water bottle 0.33L x15</li>
-      <li>Mix chocolate milk x3</li>
-      <li>Lamar juice
-        <ul>
-          <li>Cocktail</li>
-          <li>Mango</li>
-        </ul>
-      </li>
-      <li>Juhayna tangerine juice x2</li>
-    </ul>
-  </div>
-</section>
-
-<!-- FINISHED -->
-<section class="tab" id="tab-finished">
-  <div class="loc" id="finished-lock">
-    <h2>Finished</h2>
-    <p class="empty">This tab is locked. Enter the 4-digit code.</p>
-    <form id="lock-form" autocomplete="off">
-      <input id="lock-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="----" aria-label="4-digit code">
-      <button type="submit">Unlock</button>
-    </form>
-    <p class="lock-error" id="lock-error" hidden>Wrong code, try again.</p>
-  </div>
-  <div id="finished-content"></div>
-  <template id="finished-template">
-    <div class="loc"><h2>Finished</h2>
+  <div id="view-finished" class="view" hidden>
+    <div class="top">
+      <div>
+        <h1>Finished</h1>
+        <p class="sub">A log of everything taken.</p>
+      </div>
+    </div>
+    <div class="loc" id="finished-lock">
+      <h2>Locked</h2>
+      <p class="empty">Enter the 4-digit code to see this page.</p>
+      <form id="lock-form" autocomplete="off">
+        <input id="lock-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="----" aria-label="4-digit code">
+        <button type="submit">Unlock</button>
+      </form>
+      <p class="lock-error" id="lock-error" hidden>Wrong code, try again.</p>
+    </div>
+    <div id="finished-content" class="loc" hidden>
+      <h2>Taken</h2>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Date</th><th>Item</th><th>Taken</th><th>Left</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Oct 27</td><td>Hohos (D2)</td><td>x2</td><td>2</td></tr>
-            <tr><td>Oct 27</td><td>Water bottle 0.60L (Fridge)</td><td>x1</td><td class="last">0 (last one)</td></tr>
-            <tr><td>Oct 27</td><td>Milk (Fridge)</td><td>x1</td><td class="last">0 (last one)</td></tr>
-            <tr><td>Oct 25</td><td>Hohos (D2)</td><td>x1</td><td>4</td></tr>
-            <tr><td>Oct 25</td><td>Coca-Cola glass bottle (Fridge)</td><td>x1</td><td class="last">0 (last one)</td></tr>
-            <tr><td>Oct 25</td><td>Lamar pineapple juice (Fridge)</td><td>x1</td><td class="last">0 (last one)</td></tr>
-            <tr><td>Oct 24</td><td>Water bottle 0.33L (Fridge)</td><td>x3</td><td>10</td></tr>
-            <tr><td>Oct 24</td><td>Hohos (D2)</td><td>x1</td><td>5</td></tr>
-            <tr><td>Oct 24</td><td>Tea (D1)</td><td>All</td><td class="last">0 (last one)</td></tr>
-            <tr><td>Oct 24</td><td>Nesquik</td><td>All</td><td class="last">0 (last one)</td></tr>
-          </tbody>
+          <thead><tr><th>Date</th><th>Item</th><th>Taken</th><th>Left</th></tr></thead>
+          <tbody id="log-body"></tbody>
         </table>
       </div>
     </div>
-  </template>
-</section>
+  </div>
 
-</main>
+</div>
+
+<nav class="nav" aria-label="Pages">
+  <div class="nav-in">
+    <button id="nav-inv" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
+      Inventory
+    </button>
+    <button id="nav-fin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Finished
+    </button>
+  </div>
+</nav>
 
 <script>
-  var buttons = document.querySelectorAll('nav button');
-  var tabs = document.querySelectorAll('section.tab');
-  function show(name) {
-    buttons.forEach(function (b) {
-      b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false');
-    });
-    tabs.forEach(function (t) {
-      t.classList.toggle('active', t.id === 'tab-' + name);
-    });
+  // ---- Inventory data -------------------------------------------------
+  // q = count (leave out when there is no count). k = flavors under an item.
+  // c = category: savory, sweet or drinks.
+  var STOCK = [
+    { loc: 'D1', items: [
+      { n: 'Frosties', c: 'sweet' },
+      { n: 'Honey', c: 'sweet' }
+    ]},
+    { loc: 'D2', items: [
+      { n: 'Indomie chicken flavor', q: 3, c: 'savory' },
+      { n: 'Choco rice cereal (small)', q: 2, c: 'sweet' },
+      { n: 'Fruit loops cereal (small)', c: 'sweet' },
+      { n: 'Corona chocolate bar', c: 'sweet' },
+      { n: 'Stroopwafel caramel', q: 2, c: 'sweet' },
+      { n: 'Molto mini', q: 4, c: 'sweet' },
+      { n: 'Twinkie', c: 'sweet', k: [ { n: 'Double cream', q: 4 }, { n: 'Icing' } ] },
+      { n: 'Digestive biscuits', c: 'sweet' },
+      { n: 'Hohos', q: 2, c: 'sweet' },
+      { n: 'Nutella', c: 'sweet' }
+    ]},
+    { loc: 'D3', items: [
+      { n: 'Chipsy', c: 'savory', k: [
+        { n: 'Cheese' }, { n: 'Cheese & onion' }, { n: 'Chili & lime', q: 2 },
+        { n: 'Greek mix' }, { n: 'Kebab' }, { n: 'Salt & vinegar' }, { n: 'Tomato' }
+      ]},
+      { n: 'Big Chips', c: 'savory', k: [
+        { n: 'Honey sriracha' }, { n: 'Sour cream & onion' }, { n: 'Sweet lemon' }
+      ]},
+      { n: 'Raw sour cream & onion', c: 'savory' },
+      { n: 'Pretzels chili & lemon', c: 'savory' }
+    ]},
+    { loc: 'D4', items: [
+      { n: 'Tortilla Chips sweet salsa', q: 2, c: 'savory' },
+      { n: 'Doritos', c: 'savory', k: [ { n: "Flamin' hot lemon", q: 3 }, { n: 'Sweet chili pepper' } ] },
+      { n: 'Cheetos', c: 'savory', k: [ { n: 'Crunchy', q: 4 }, { n: 'Puffs' } ] },
+      { n: 'Puffs nacho cheese melt', c: 'savory' },
+      { n: 'Bake Rolz', c: 'savory', k: [ { n: 'Butter & herb', q: 2 }, { n: 'Sweet chili', q: 2 } ] }
+    ]},
+    { loc: 'Fridge', items: [
+      { n: 'Water bottle 0.33L', q: 15, c: 'drinks' },
+      { n: 'Mix chocolate milk', q: 3, c: 'drinks' },
+      { n: 'Lamar juice', c: 'drinks', k: [ { n: 'Cocktail' }, { n: 'Mango' } ] },
+      { n: 'Juhayna tangerine juice', q: 2, c: 'drinks' },
+      { n: 'Toast', c: 'savory' }
+    ]},
+    { loc: 'Freezer', items: [] }
+  ];
+
+  // ---- Finished log (newest first) -----------------------------------
+  var LOG = [
+    { d: '2026-10-27', n: 'Hohos (D2)', t: 'x2', l: '2' },
+    { d: '2026-10-27', n: 'Water bottle 0.60L (Fridge)', t: 'x1', l: '0 (last one)' },
+    { d: '2026-10-27', n: 'Milk (Fridge)', t: 'x1', l: '0 (last one)' },
+    { d: '2026-10-25', n: 'Hohos (D2)', t: 'x1', l: '4' },
+    { d: '2026-10-25', n: 'Coca-Cola glass bottle (Fridge)', t: 'x1', l: '0 (last one)' },
+    { d: '2026-10-25', n: 'Lamar pineapple juice (Fridge)', t: 'x1', l: '0 (last one)' },
+    { d: '2026-10-24', n: 'Water bottle 0.33L (Fridge)', t: 'x3', l: '10' },
+    { d: '2026-10-24', n: 'Hohos (D2)', t: 'x1', l: '5' },
+    { d: '2026-10-24', n: 'Tea (D1)', t: 'All', l: '0 (last one)' },
+    { d: '2026-10-24', n: 'Nesquik', t: 'All', l: '0 (last one)' }
+  ];
+
+  // ---- Helpers ---------------------------------------------------------
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
   }
-  buttons.forEach(function (b) {
-    b.addEventListener('click', function () { show(b.dataset.tab); });
+  function badge(q) {
+    if (q === undefined) return null;            // no count: show nothing
+    if (q === 1) return el('span', 'pill low', 'Last one');
+    return el('span', 'pill', 'x' + q);
+  }
+  function row(name, q, child) {
+    var r = el('div', 'row' + (child ? ' child' : ''));
+    r.appendChild(el('span', '', name));
+    var b = badge(q);
+    if (b) r.appendChild(b);
+    return r;
+  }
+  function chevron() {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('class', 'chev');
+    s.setAttribute('fill', 'none');
+    s.setAttribute('stroke', 'currentColor');
+    s.setAttribute('stroke-width', '2.5');
+    s.setAttribute('stroke-linecap', 'round');
+    s.setAttribute('stroke-linejoin', 'round');
+    s.setAttribute('aria-hidden', 'true');
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', 'm6 9 6 6 6-6');
+    s.appendChild(p);
+    return s;
+  }
+  function shown(it, term, cat) {
+    if (cat !== 'all' && it.c !== cat) return null;
+    if (!term) return it;
+    if (it.n.toLowerCase().indexOf(term) > -1) return it;
+    if (it.k) {
+      var kk = it.k.filter(function (k) { return k.n.toLowerCase().indexOf(term) > -1; });
+      if (kk.length) return { n: it.n, c: it.c, k: kk };
+    }
+    return null;
+  }
+
+  // ---- Render inventory ------------------------------------------------
+  var state = { cat: 'all', term: '' };
+  var listEl = document.getElementById('list');
+
+  function render() {
+    listEl.textContent = '';
+    var any = false;
+    STOCK.forEach(function (group) {
+      var vis = group.items.map(function (it) { return shown(it, state.term, state.cat); })
+                           .filter(Boolean);
+      if (!vis.length) {
+        if (!group.items.length && state.cat === 'all' && !state.term) {
+          var e = el('div', 'loc');
+          e.appendChild(el('h2', '', group.loc));
+          e.appendChild(el('p', 'empty', 'Empty'));
+          listEl.appendChild(e);
+          any = true;
+        }
+        return;
+      }
+      any = true;
+      var card = el('div', 'loc');
+      card.appendChild(el('h2', '', group.loc));
+      vis.forEach(function (it) {
+        if (it.k) {
+          var d = document.createElement('details');
+          d.open = true;
+          var s = document.createElement('summary');
+          var left = el('span', '', it.n);
+          left.appendChild(chevron());
+          s.appendChild(left);
+          s.appendChild(el('span', 'pill', it.k.length + (it.k.length === 1 ? ' flavor' : ' flavors')));
+          d.appendChild(s);
+          var kids = el('div', 'kids');
+          it.k.forEach(function (k) { kids.appendChild(row(k.n, k.q, true)); });
+          d.appendChild(kids);
+          card.appendChild(d);
+        } else {
+          card.appendChild(row(it.n, it.q, false));
+        }
+      });
+      listEl.appendChild(card);
+    });
+    if (!any) listEl.appendChild(el('p', 'none', 'No snacks match that. Try another word.'));
+  }
+
+  // Stats
+  var total = 0;
+  STOCK.forEach(function (g) {
+    g.items.forEach(function (it) { total += it.k ? it.k.length : 1; });
+  });
+  document.getElementById('stat-items').textContent = total;
+  var now = new Date();
+  var taken = LOG.filter(function (r) {
+    return (now - new Date(r.d + 'T00:00:00')) / 86400000 <= 7;
+  }).length;
+  document.getElementById('stat-taken').textContent = taken;
+
+  // Controls
+  document.getElementById('search').addEventListener('input', function (e) {
+    state.term = e.target.value.trim().toLowerCase();
+    render();
+  });
+  var chipBtns = document.querySelectorAll('#chips .chip');
+  chipBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.cat = b.dataset.cat;
+      chipBtns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      render();
+    });
+  });
+  render();
+
+  // ---- Finished log + light lock --------------------------------------
+  // Not real security: the code is in this file.
+  var body = document.getElementById('log-body');
+  LOG.forEach(function (r) {
+    var tr = document.createElement('tr');
+    var p = r.d.split('-');
+    tr.appendChild(el('td', '', MONTHS[parseInt(p[1], 10) - 1] + ' ' + parseInt(p[2], 10)));
+    tr.appendChild(el('td', '', r.n));
+    tr.appendChild(el('td', '', r.t));
+    tr.appendChild(el('td', r.l.indexOf('last one') > -1 ? 'last' : '', r.l));
+    body.appendChild(tr);
   });
 
-  // Light lock on the Finished tab (not real security: the code is in this file)
   var lockBox = document.getElementById('finished-lock');
-  var lockForm = document.getElementById('lock-form');
   var lockInput = document.getElementById('lock-input');
   var lockError = document.getElementById('lock-error');
-  lockForm.addEventListener('submit', function (e) {
+  document.getElementById('lock-form').addEventListener('submit', function (e) {
     e.preventDefault();
     if (lockInput.value === '1111') {
-      document.getElementById('finished-content').appendChild(
-        document.getElementById('finished-template').content.cloneNode(true)
-      );
       lockBox.hidden = true;
+      document.getElementById('finished-content').hidden = false;
     } else {
       lockError.hidden = false;
       lockInput.value = '';
       lockInput.focus();
     }
   });
+
+  // ---- Page switch -------------------------------------------------------
+  var vInv = document.getElementById('view-inventory');
+  var vFin = document.getElementById('view-finished');
+  var nInv = document.getElementById('nav-inv');
+  var nFin = document.getElementById('nav-fin');
+  function go(toFinished) {
+    vInv.hidden = toFinished;
+    vFin.hidden = !toFinished;
+    if (toFinished) { nFin.setAttribute('aria-current', 'page'); nInv.removeAttribute('aria-current'); }
+    else { nInv.setAttribute('aria-current', 'page'); nFin.removeAttribute('aria-current'); }
+    window.scrollTo(0, 0);
+  }
+  nInv.addEventListener('click', function () { go(false); });
+  nFin.addEventListener('click', function () { go(true); });
 </script>
 </body>
 </html>
